@@ -1,18 +1,52 @@
-g = {}
+# Breadth First Search (BFS) using Recursion
+# Undirected Graph without using class
 
-n = int(input("Nodes: "))
+def add_edge(graph, u, v):
+    # Add nodes if not present
+    if u not in graph:
+        graph[u] = []
 
-for i in range(n):
-    a = input("Node: ")
-    g[a] = input("Neighbours: ").split()
+    if v not in graph:
+        graph[v] = []
 
-v = []
-q = [input("Start: ")]
+    # Undirected graph
+    graph[u].append(v)
+    graph[v].append(u)
 
-while q:
-    x = q.pop(0)
 
-    if x not in v:
-        print(x, end=" ")
-        v.append(x)
-        q += g[x]
+# Recursive BFS function
+def bfs(graph, queue, visited):
+    if not queue:
+        return
+
+    node = queue.pop(0)
+    print(node, end=" ")
+
+    for neighbor in graph[node]:
+        if neighbor not in visited:
+            visited.add(neighbor)
+            queue.append(neighbor)
+
+    bfs(graph, queue, visited)
+
+
+# Main Program
+graph = {}
+
+edges = int(input("Enter number of edges: "))
+
+print("Enter edges (u v):")
+for i in range(edges):
+    u, v = input().split()
+    add_edge(graph, u, v)
+
+start = input("Enter starting vertex: ")
+
+print("\nBFS Traversal:")
+
+visited = set()
+visited.add(start)
+
+queue = [start]
+
+bfs(graph, queue, visited)
