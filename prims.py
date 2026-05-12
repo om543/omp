@@ -1,24 +1,52 @@
-n = int(input("Vertices: "))
+# Prim's Minimum Spanning Tree Algorithm
+# Greedy Algorithm in Python
 
-g = []
+INF = 9999999
 
-print("Enter matrix:")
+# Number of vertices
+n = int(input("Enter number of vertices: "))
+
+# Adjacency Matrix
+graph = []
+
+print("Enter adjacency matrix:")
 
 for i in range(n):
-    g.append(list(map(int, input().split())))
+    row = list(map(int, input().split()))
+    graph.append(row)
 
-s = [1]+[0]*(n-1)
+selected = [False] * n
 
-for k in range(n-1):
-    m = 999
+# Start from vertex 0
+selected[0] = True
+
+edge_count = 0
+total_cost = 0
+
+print("\nEdges in MST:")
+
+while edge_count < n - 1:
+
+    minimum = INF
+    x = 0
+    y = 0
 
     for i in range(n):
-        if s[i]:
+        if selected[i]:
             for j in range(n):
-                if not s[j] and g[i][j]:
-                    if m > g[i][j]:
-                        m = g[i][j]
-                        x, y = i, j
 
-    print(x, "-", y, "=", g[x][y])
-    s[y] = 1
+                # Select minimum edge
+                if (not selected[j]) and graph[i][j]:
+
+                    if minimum > graph[i][j]:
+                        minimum = graph[i][j]
+                        x = i
+                        y = j
+
+    print(x, "-", y, ":", graph[x][y])
+
+    total_cost += graph[x][y]
+    selected[y] = True
+    edge_count += 1
+
+print("\nMinimum Cost =", total_cost)
