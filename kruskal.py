@@ -1,28 +1,50 @@
-e = []
+# Kruskal's Minimum Spanning Tree Algorithm
+# Greedy Algorithm in Python
 
-n = int(input("Edges: "))
+parent = []
 
-for i in range(n):
-    u = input("U: ")
-    v = input("V: ")
-    w = int(input("Weight: "))
+# Find function
+def find(i):
+    while parent[i] != i:
+        i = parent[i]
+    return i
 
-    e.append((w, u, v))
-
-p = {}
-
-for w, u, v in e:
-    p[u] = u
-    p[v] = v
-
-
-def f(x):
-    if p[x] == x:
-        return x
-    return f(p[x])
+# Union function
+def union(a, b):
+    x = find(a)
+    y = find(b)
+    parent[x] = y
 
 
-for w, u, v in sorted(e):
-    if f(u) != f(v):
-        print(u, "-", v, "=", w)
-        p[f(u)] = f(v)
+# Input
+vertices = int(input("Enter number of vertices: "))
+edges = int(input("Enter number of edges: "))
+
+graph = []
+
+print("Enter edges and weights (u v w):")
+
+for i in range(edges):
+    u, v, w = map(int, input().split())
+    graph.append([u, v, w])
+
+# Sort edges by weight
+graph.sort(key=lambda x: x[2])
+
+# Initialize parent array
+for i in range(vertices):
+    parent.append(i)
+
+mst_cost = 0
+
+print("\nEdges in MST:")
+
+# Kruskal Algorithm
+for u, v, w in graph:
+
+    if find(u) != find(v):
+        union(u, v)
+        print(u, "-", v, ":", w)
+        mst_cost += w
+
+print("\nMinimum Cost =", mst_cost)
